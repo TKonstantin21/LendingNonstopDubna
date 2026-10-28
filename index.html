@@ -34,6 +34,8 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#FFF9F4;
+  --bg-2:#FFF3EA;          /* более насыщенный тон подложки (градиенты секций) */
+  --bg-rgb:255,249,244;    /* тот же фон в RGB — для полупрозрачных заливок (шапка) */
   --ink:#1E2430;
   --muted:#5C6470;
   --red:#F05A5F;--red-rgb:240,90,95;
@@ -57,10 +59,12 @@
   --font-t:"Montserrat",Arial,sans-serif;
 }
 html{scroll-behavior:smooth}
-/* ---- Демо-палитры A/B/C/D (переключатель внизу справа) ---- */
-[data-palette="b"]{--red:#E4556B;--red-rgb:228,85,107;--red-soft:#EF6A7E;--red-soft-rgb:239,106,126;--orange:#FF9E7D;--orange-rgb:255,158,125;--stage-3:#FFCDBE}
-[data-palette="c"]{--red:#E04E7A;--red-rgb:224,78,122;--red-soft:#7A5AF8;--red-soft-rgb:122,90,248;--orange:#FF7EB3;--orange-rgb:255,126,179;--stage-3:#F7BEDC}
-[data-palette="d"]{--red:#E04A55;--red-rgb:224,74,85;--red-soft:#2F6FF0;--red-soft-rgb:47,111,240;--orange:#0BA5A8;--orange-rgb:11,165,168;--stage-3:#7FD6D9}
+/* ---- Демо-палитры A/B/C/D (переключатель внизу справа) ----
+   Вместе с акцентами у каждой палитры меняется и фон (--bg / --bg-2 / --bg-rgb),
+   чтобы подложка гармонировала с основным визуалом. Палитра A — исходная (тёплый персик). */
+[data-palette="b"]{--red:#E4556B;--red-rgb:228,85,107;--red-soft:#EF6A7E;--red-soft-rgb:239,106,126;--orange:#FF9E7D;--orange-rgb:255,158,125;--stage-3:#FFCDBE;--bg:#FFF4F2;--bg-2:#FFE7E2;--bg-rgb:255,244,242}
+[data-palette="c"]{--red:#E04E7A;--red-rgb:224,78,122;--red-soft:#7A5AF8;--red-soft-rgb:122,90,248;--orange:#FF7EB3;--orange-rgb:255,126,179;--stage-3:#F7BEDC;--bg:#FBF4FF;--bg-2:#F3E6FB;--bg-rgb:251,244,255}
+[data-palette="d"]{--red:#E04A55;--red-rgb:224,74,85;--red-soft:#2F6FF0;--red-soft-rgb:47,111,240;--orange:#0BA5A8;--orange-rgb:11,165,168;--stage-3:#7FD6D9;--bg:#F3F7FF;--bg-2:#E4F0FE;--bg-rgb:243,247,255}
 .pal-switch{position:fixed;right:14px;bottom:14px;z-index:900;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(31,36,48,.1);border-radius:999px;padding:6px 9px;box-shadow:0 10px 24px -12px rgba(31,36,48,.4)}
 .pal-switch .pal-lab{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:2px}
 .pal-switch button{width:26px;height:26px;border-radius:50%;border:1px solid rgba(31,36,48,.14);background:#fff;color:var(--ink);font:800 12px/1 var(--font-t);cursor:pointer;transition:transform .2s,background .2s,color .2s}
@@ -140,7 +144,7 @@ h2.title .grad{background:var(--grad);-webkit-background-clip:text;background-cl
    делает position:fixed потомков (мобильное меню) зависимыми от шапки. */
 .header.scrolled::before{
   content:"";position:absolute;inset:0;z-index:-1;
-  background:rgba(255,249,244,.82);
+  background:rgba(var(--bg-rgb),.82);
   -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
 }
 .header-in{display:flex;align-items:center;justify-content:space-between;gap:16px}
@@ -314,7 +318,7 @@ h2.title .grad{background:var(--grad);-webkit-background-clip:text;background-cl
 @keyframes marq{to{transform:translateX(-50%)}}
 
 /* ======================= БОЛИ ======================= */
-.pains{background:linear-gradient(180deg,var(--bg),#FFF3EA 100%)}
+.pains{background:linear-gradient(180deg,var(--bg),var(--bg-2) 100%)}
 .pain-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .pain-card{
   position:relative;background:var(--glass);
@@ -533,6 +537,8 @@ h2.title .grad{background:var(--grad);-webkit-background-clip:text;background-cl
 .rev-ava{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-family:var(--font-d);color:#fff;flex:none}
 .ava-1{background:linear-gradient(135deg,#FF7B72,#FFA34B)}
 .ava-2{background:linear-gradient(135deg,#2F6FF0,#5B8DF5)}
+.ava-3{background:linear-gradient(135deg,#7A5AF8,#FF7EB3)}
+.ava-4{background:linear-gradient(135deg,#0BA5A8,#3BD27F)}
 .rev-name b{display:block;font-size:16px}
 .rev-name span{font-size:12.5px;color:var(--muted);font-weight:600}
 .rev-verified{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--blue);background:rgba(47,111,240,.09);border:1px solid rgba(47,111,240,.18);padding:5px 10px;border-radius:999px;margin-left:auto;white-space:nowrap}
@@ -1222,31 +1228,53 @@ a.eco-card:hover .eco-card__arrow{transform:translateX(5px)}
     <div class="container">
       <div class="section-head reveal">
         <span class="eyebrow">Истории из группы «Чир Спорт Дубна»</span>
-        <h2 class="title">Это <span class="grad">реальные слова</span> мам наших воспитанниц</h2>
-        <p class="lead">Отзывы опубликованы в нашем сообществе ВКонтакте. Ниже — ссылки на оригинальные посты.</p>
+        <h2 class="title">Это <span class="grad">реальные слова</span> родителей и гостей наших воспитанниц</h2>
+        <p class="lead">Благодарности тренерам и отзывы о наших праздниках — настоящие, от сердца. Спасибо каждому, кто их оставил.</p>
       </div>
       <div class="rev-grid">
 
         <article class="rev-card reveal" data-delay="1">
           <div class="rev-top">
-            <span class="rev-ava ava-1">Е</span>
-            <div class="rev-name"><b>Елена М.</b><span>мама Алисы · группа «Дети»</span></div>
-            <span class="rev-verified">✓ из группы ВК</span>
+            <span class="rev-ava ava-1">А</span>
+            <div class="rev-name"><b>Аксинья Вескова</b><span>мама воспитанницы</span></div>
+            <span class="rev-verified">✓ реальный отзыв</span>
           </div>
-          <blockquote class="rev-text">«Привели Алису (6 лет) в „Нон-Стоп“ осенью. До этого она целыми днями сидела в телефоне, спина была колесом, а во дворе начала общаться с ребятами постарше, которые нам совсем не нравились. Через месяц тренировок я заметила, что она сама выпрямляется, когда сидит за столом. А через три месяца у неё появились первые медали на областных соревнованиях и, главное, — команда девчонок, с которыми она теперь проводит всё свободное время. Никакой улицы, только тренировки и сборы. Спасибо тренерам за терпение!»</blockquote>
-          <!-- КОНТАКТЫ: замените href на ссылку на оригинальный пост в группе ВК -->
-          <a class="rev-link" href="https://vk.ru/nonstop_dubna" title="Ссылка на исходный пост в группе ВКонтакте">Читать оригинал в ВК →</a>
+          <blockquote class="rev-text">«Выражаем всем нашим тренерам огромную благодарность за крутую подготовку детей!!!! Вы супер, и, конечно, выражаем благодарность нашему главному и любимому тренеру Маргарите Трофимчук. У нас впереди ещё много побед. НОН-СТОП, ВПЕРЁД!!!!!!»</blockquote>
+          <!-- КОНТАКТЫ: замените href на ссылку на оригинальный отзыв в группе ВК -->
+          <a class="rev-link" href="https://vk.ru/nonstop_dubna" title="Ссылка на исходный отзыв в группе ВКонтакте">Читать оригинал в ВК →</a>
         </article>
 
         <article class="rev-card reveal" data-delay="2">
           <div class="rev-top">
-            <span class="rev-ava ava-2">О</span>
-            <div class="rev-name"><b>Ольга С.</b><span>мама Киры · группа «Мальчики и девочки»</span></div>
-            <span class="rev-verified">✓ из группы ВК</span>
+            <span class="rev-ava ava-2">И</span>
+            <div class="rev-name"><b>Ирина Никишина</b><span>мама воспитанников</span></div>
+            <span class="rev-verified">✓ реальный отзыв</span>
           </div>
-          <blockquote class="rev-text">«Кира (9 лет) всегда стеснялась выступать, пряталась за спину. В „Нон-Стоп“ пришли по совету знакомых. Тренеры не давили, а постепенно включали её в командные элементы. Сейчас она капитан своей возрастной группы, уверенно выходит на сцену и даже помогает новичкам. Осанка стала идеальной, гибкость выросла в разы. Но самое ценное — она поверила в себя.»</blockquote>
-          <!-- КОНТАКТЫ: замените href на ссылку на оригинальный комментарий в группе ВК -->
-          <a class="rev-link" href="https://vk.ru/nonstop_dubna" title="Ссылка на исходный комментарий в группе ВКонтакте">Читать оригинал в ВК →</a>
+          <blockquote class="rev-text">«Спасибо нашим тренерам за успехи наших детей!!! Праздник был организован на высшем уровне, спасибо!!»</blockquote>
+          <!-- КОНТАКТЫ: замените href на ссылку на оригинальный отзыв в группе ВК -->
+          <a class="rev-link" href="https://vk.ru/nonstop_dubna" title="Ссылка на исходный отзыв в группе ВКонтакте">Читать оригинал в ВК →</a>
+        </article>
+
+        <article class="rev-card reveal" data-delay="1">
+          <div class="rev-top">
+            <span class="rev-ava ava-3">В</span>
+            <div class="rev-name"><b>Валентина Верхоглядова</b><span>гость праздника</span></div>
+            <span class="rev-verified">✓ реальный отзыв</span>
+          </div>
+          <blockquote class="rev-text">«Спасибо большое всем, кто принял участие в организации данного мероприятия. И оформление зала, и насыщенность и зрелищность номеров, и атмосфера на трибунах, и ведущая (ведущая мне особенно понравилась) — всё было на высшем уровне. У вас всё получилось, и я вас с этим поздравляю. Желаю дальнейших успехов ⚘️⚘️⚘️»</blockquote>
+          <!-- КОНТАКТЫ: замените href на ссылку на оригинальный отзыв в группе ВК -->
+          <a class="rev-link" href="https://vk.ru/nonstop_dubna" title="Ссылка на исходный отзыв в группе ВКонтакте">Читать оригинал в ВК →</a>
+        </article>
+
+        <article class="rev-card reveal" data-delay="2">
+          <div class="rev-top">
+            <span class="rev-ava ava-4">В</span>
+            <div class="rev-name"><b>Валентина Макарова</b><span>мама воспитанницы</span></div>
+            <span class="rev-verified">✓ реальный отзыв</span>
+          </div>
+          <blockquote class="rev-text">«Маргарита Алексеевна, спасибо Вам за ваш труд. Мы гордимся быть частью вашего коллектива. НОН-СТОП — ЛУЧШИЕ»</blockquote>
+          <!-- КОНТАКТЫ: замените href на ссылку на оригинальный отзыв в группе ВК -->
+          <a class="rev-link" href="https://vk.ru/nonstop_dubna" title="Ссылка на исходный отзыв в группе ВКонтакте">Читать оригинал в ВК →</a>
         </article>
 
       </div>
